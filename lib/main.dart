@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-
+void main() {
+  runApp(  UserInfoCard(name: '', email: '', role: '',));
+}
 class UserInfoCard extends StatelessWidget {
   final String name;
   final String email;
