@@ -1,20 +1,17 @@
-
 import 'package:flutter/material.dart';
+import 'bottom_nav.dart';
+
 void main() {
-  runApp(SearchPage());
+  runApp(MyApp());
 }
 
-class SearchPage extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.green.shade50, // لون خلفية الصفحة
-      body: Center(
-        child: Text(
-          "صفحة البحث",
-          style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-        ),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: BottomNavController(),
     );
   }
 }
+
