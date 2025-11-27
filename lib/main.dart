@@ -1,95 +1,145 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const TasbeehApp());
+  runApp(const MyCVApp());
 }
 
-class TasbeehApp extends StatelessWidget {
-  const TasbeehApp({super.key});
+class MyCVApp extends StatelessWidget {
+  const MyCVApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'عداد التسبيح',
+      title: 'CV App',
       theme: ThemeData(
-        fontFamily: 'Roboto',
-        primarySwatch: Colors.teal,
+        primarySwatch: Colors.indigo,
       ),
-      home: const TasbeehScreen(),
+      home: const CVScreen(),
     );
   }
 }
 
-class TasbeehScreen extends StatefulWidget {
-  const TasbeehScreen({super.key});
-
-  @override
-  State<TasbeehScreen> createState() => _TasbeehScreenState();
-}
-
-class _TasbeehScreenState extends State<TasbeehScreen> {
-  int allahuAkbar = 0;
-  int alhamdulillah = 0;
-  int subhanAllah = 0;
+class CVScreen extends StatelessWidget {
+  const CVScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    final media = MediaQuery.of(context).size;
+
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF74EBD5), Color(0xFFACB6E5)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+      backgroundColor: Colors.grey[100],
+      appBar: AppBar(
+        title: const Text(
+          'My CV',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
         ),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.all(16.0),
+        centerTitle: true,
+        backgroundColor: Colors.indigo,
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+
+            width: double.infinity,
+
+            constraints: BoxConstraints(minHeight: media.height - kToolbarHeight),
+            padding: const EdgeInsets.all(20),
+            color: Colors.white,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(height: 16),
+                const SizedBox(height: 10),
+                const CircleAvatar(
+                  radius: 60,
+                  backgroundColor: Colors.indigo,
+                  child: Icon(Icons.person, size: 70, color: Colors.white),
+                ),
+                const SizedBox(height: 12),
                 const Text(
-                  'عداد الأذكار',
+                  "Yosif Mohammed",
                   style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    shadows: [
-                      Shadow(
-                        color: Colors.black45,
-                        offset: Offset(1, 1),
-                        blurRadius: 3,
+                      fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black87),
+                ),
+                const Text(
+                  "Mobile App Developer",
+                  style: TextStyle(
+                      fontSize: 16, color: Colors.grey, fontStyle: FontStyle.italic),
+                ),
+                const SizedBox(height: 12),
+                const Divider(height: 30, color: Colors.indigo, thickness: 1),
+                // Info rows (use Expanded to avoid overflow)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Row(
+                    children: const [
+                      Icon(Icons.email, color: Colors.indigo),
+                      SizedBox(width: 8),
+                      Text(
+                        "Email: ",
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
+                      ),
+                      Expanded(
+                        child: Text(
+                          "lahenlahrn@gmail.com",
+                          style: TextStyle(color: Colors.black54),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 24),
-                _buildCounterCard(
-                  title: 'الله أكبر',
-                  count: allahuAkbar,
-                  color: Colors.orangeAccent,
-                  onTap: () => setState(() => allahuAkbar++),
-                  onReset: () => setState(() => allahuAkbar = 0),
+                const SizedBox(height: 6),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Row(
+                    children: const [
+                      Icon(Icons.phone, color: Colors.indigo),
+                      SizedBox(width: 8),
+                      Text(
+                        "Phone: ",
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
+                      ),
+                      Expanded(
+                        child: Text(
+                          "772622455",
+                          style: TextStyle(color: Colors.black54),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 16),
-                _buildCounterCard(
-                  title: 'الحمد لله',
-                  count: alhamdulillah,
-                  color: Colors.lightBlueAccent,
-                  onTap: () => setState(() => alhamdulillah++),
-                  onReset: () => setState(() => alhamdulillah = 0),
-                ),
-                const SizedBox(height: 16),
-                _buildCounterCard(
-                  title: 'سبحان الله',
-                  count: subhanAllah,
-                  color: Colors.purpleAccent,
-                  onTap: () => setState(() => subhanAllah++),
-                  onReset: () => setState(() => subhanAllah = 0),
-                ),
+                const SizedBox(height: 20),
+
+                // Skills Section
+                sectionTitle("Skills"),
+                const SizedBox(height: 8),
+                sectionItems([
+                  "Proficient in some programming languages",
+                  "Photoshop design",
+                  "Video editing using CapCut",
+                ]),
+
+                const SizedBox(height: 20),
+                // Education Section
+                sectionTitle("Education"),
+                const SizedBox(height: 8),
+                sectionItems([
+                  "Bachelor's degree in Computer Science",
+                  "Diploma in Photoshop Design",
+                ]),
+
+                const SizedBox(height: 20),
+                // Experience Section
+                sectionTitle("Experience"),
+                const SizedBox(height: 8),
+                sectionItems([
+                  "Intern at Radna Institute to gain experience in Photoshop and video editing",
+                  "Freelance Projects (UI Design, API Integration)",
+                ]),
+
                 const SizedBox(height: 30),
               ],
             ),
@@ -99,76 +149,45 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
     );
   }
 
-  Widget _buildCounterCard({
-    required String title,
-    required int count,
-    required Color color,
-    required VoidCallback onTap,
-    required VoidCallback onReset,
-  }) {
-    return Card(
-      color: Colors.white.withOpacity(0.85),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      elevation: 8,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
-                color: color.withOpacity(0.9),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              '$count',
-              style: TextStyle(
-                fontSize: 36,
-                fontWeight: FontWeight.w600,
-                color: color,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: onTap,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: color,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 14),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
-                    elevation: 4,
-                  ),
-                  child: const Text(
-                    'تسبيح',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-                OutlinedButton(
-                  onPressed: onReset,
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: color, width: 2),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 14),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
-                  ),
-                  child: Text(
-                    'تصفير',
-                    style: TextStyle(fontSize: 18, color: color),
-                  ),
-                ),
-              ],
-            ),
-          ],
+  // عنوان القسم (غير const بسبب استخدام shade)
+  static Widget sectionTitle(String title) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      decoration: BoxDecoration(
+        color: Colors.indigo.shade50,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Center(
+        child: Text(
+          title,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.indigo.shade700,
+          ),
         ),
+      ),
+    );
+  }
+
+  // عناصر القسم
+  static Widget sectionItems(List<String> items) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: items
+            .map(
+              (e) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Text(
+              "• $e",
+              style: const TextStyle(fontSize: 16, color: Colors.black87),
+            ),
+          ),
+        )
+            .toList(),
       ),
     );
   }
