@@ -1,173 +1,98 @@
+//import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const TasbeehApp());
+  runApp(ProfileApp());
 }
 
-class TasbeehApp extends StatelessWidget {
-  const TasbeehApp({super.key});
+class ProfileApp extends StatefulWidget {
+  @override
+  _ProfileAppState createState() => _ProfileAppState();
+}
+
+class _ProfileAppState extends State<ProfileApp> {
+  final _formKey = GlobalKey<FormState>();
+  String _name = '';
+  String _email = '';
+  final TextEditingController _passwordController = TextEditingController();
+
+
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      print('Name: $_name, Email: $_email, Password : ${_passwordController.text}');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'عداد التسبيح',
-      theme: ThemeData(
-        fontFamily: 'Roboto',
-        primarySwatch: Colors.teal,
-      ),
-      home: const TasbeehScreen(),
-    );
-  }
-}
-
-class TasbeehScreen extends StatefulWidget {
-  const TasbeehScreen({super.key});
-
-  @override
-  State<TasbeehScreen> createState() => _TasbeehScreenState();
-}
-
-class _TasbeehScreenState extends State<TasbeehScreen> {
-  int allahuAkbar = 0;
-  int alhamdulillah = 0;
-  int subhanAllah = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF74EBD5), Color(0xFFACB6E5)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.all(16.0),
+      home: Scaffold(
+        appBar: AppBar(title: Text('Form Example')),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
             child: Column(
               children: [
-                const SizedBox(height: 16),
-                const Text(
-                  'عداد الأذكار',
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    shadows: [
-                      Shadow(
-                        color: Colors.black45,
-                        offset: Offset(1, 1),
-                        blurRadius: 3,
-                      ),
-                    ],
-                  ),
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'Name'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your name';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _name = value!;
+                  },
                 ),
-                const SizedBox(height: 24),
-                _buildCounterCard(
-                  title: 'الله أكبر',
-                  count: allahuAkbar,
-                  color: Colors.orangeAccent,
-                  onTap: () => setState(() => allahuAkbar++),
-                  onReset: () => setState(() => allahuAkbar = 0),
+                SizedBox(height: 16),
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'Email'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email';
+                    } else if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value!)) {
+                      return 'Please enter a valid email address';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _email = value!;
+                  },
                 ),
-                const SizedBox(height: 16),
-                _buildCounterCard(
-                  title: 'الحمد لله',
-                  count: alhamdulillah,
-                  color: Colors.lightBlueAccent,
-                  onTap: () => setState(() => alhamdulillah++),
-                  onReset: () => setState(() => alhamdulillah = 0),
+                TextFormField(
+                  controller: _passwordController,
+                  decoration: InputDecoration(labelText: 'Password'),
+                  obscureText: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your password';
+                    }
+                    else if (value!.length<8) {
+                      return ' password should be at least 8 chars';
+                    }else if (!RegExp("[a-z]").hasMatch(value!)) {
+                      return ' password should at least one lowercase chars';
+                    }else if (!RegExp("[A-Z]").hasMatch(value!)) {
+                      return ' password should at least one uppercase chars';
+                    }else if (!RegExp("[!#\$%&'*+-/=?^_`{|}~@]").hasMatch(value!)) {
+                      return ' password should at least one symbol';
+                    }else if (!RegExp("[0-9]").hasMatch(value!)) {
+                      return ' password should at least one number';
+                    }
+                    return null;
+                  },
                 ),
-                const SizedBox(height: 16),
-                _buildCounterCard(
-                  title: 'سبحان الله',
-                  count: subhanAllah,
-                  color: Colors.purpleAccent,
-                  onTap: () => setState(() => subhanAllah++),
-                  onReset: () => setState(() => subhanAllah = 0),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _submitForm,
+                  child: Text('Submit'),
                 ),
-                const SizedBox(height: 30),
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCounterCard({
-    required String title,
-    required int count,
-    required Color color,
-    required VoidCallback onTap,
-    required VoidCallback onReset,
-  }) {
-    return Card(
-      color: Colors.white.withOpacity(0.85),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      elevation: 8,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
-                color: color.withOpacity(0.9),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              '$count',
-              style: TextStyle(
-                fontSize: 36,
-                fontWeight: FontWeight.w600,
-                color: color,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: onTap,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: color,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 14),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
-                    elevation: 4,
-                  ),
-                  child: const Text(
-                    'تسبيح',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-                OutlinedButton(
-                  onPressed: onReset,
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: color, width: 2),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 14),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
-                  ),
-                  child: Text(
-                    'تصفير',
-                    style: TextStyle(fontSize: 18, color: color),
-                  ),
-                ),
-              ],
-            ),
-          ],
         ),
       ),
     );
