@@ -1,8 +1,4 @@
-
 import 'package:flutter/material.dart';
-void main() {
-  runApp(SearchPage());
-}
 
 class SearchPage extends StatelessWidget {
   @override

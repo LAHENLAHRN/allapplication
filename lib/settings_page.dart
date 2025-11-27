@@ -1,17 +1,13 @@
-
 import 'package:flutter/material.dart';
-void main() {
-  runApp(SearchPage());
-}
 
-class SearchPage extends StatelessWidget {
+class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green.shade50, // لون خلفية الصفحة
+      backgroundColor: Colors.orange.shade50, // لون خلفية الصفحة
       body: Center(
         child: Text(
-          "صفحة البحث",
+          "صفحة الإعدادات",
           style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
         ),
       ),
